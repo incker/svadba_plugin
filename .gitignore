@@ -1,0 +1,4 @@
+# IntelliJ files
+/.idea/*
+# But keep dictionaries to have less false positives in spellcheck inspection.
+!/.idea/dictionaries

@@ -1,0 +1,28 @@
+<div class="svadba-widget">
+    <div class="svadba-widget-title justify-space-between">
+        <div class="sending-status">Плагин сделанный для людей</div>
+        <div class="inserts-btn" title="Подсказка по использованию плагина">%</div>
+    </div>
+
+    <textarea class="plugin-textarea" placeholder="Напишите зазыв.."></textarea>
+
+    <div class="msg-preview">
+        Тут будет показан рассылаемый шаблон
+    </div>
+
+    <div class="men-counter-wrapper justify-space-between">
+        <button class="delivery-start">Отправить</button>
+        <div class="men-counter men-counter-sent">0</div>
+        <div class="men-counter men-counter-onl">0</div>
+    </div>
+</div>
+
+<!-- подсказки -->
+<div class="plugin-popup popup-inserts invis" tabindex="100">
+    <div class="pattern-select" data-hint="Имя (Andy)">%name%</div>
+    <div class="pattern-select" data-hint="ИМЯ (ANDY)">%NAME%</div>
+    <div class="pattern-select" data-hint="возраст (35)">%age%</div>
+    <div class="pattern-select" data-hint="Страна (Cuba)">%country%</div>
+</div>
+
+<div class="plugin-popup popup-error invis" tabindex="101"></div>
