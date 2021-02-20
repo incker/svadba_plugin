@@ -38,7 +38,6 @@ Promise.all([
             'scope-site/api-onliners.js',
             'scope-site/other/console-clear.js',
         ].forEach((src) => {
-            // подключаем javascript на страницу
             const script = document.createElement('script');
             script.src = chrome.runtime.getURL(src); // хромовская ссылка
             script.async = false; // чтоб загружались последовательно
