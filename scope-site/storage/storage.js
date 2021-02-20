@@ -7,7 +7,7 @@ const storage = (() => {
         ladyId = parsedLadyId;
     });
 
-    const rowName = (name) => name.concat(ladyId.toString());
+    const rowName = (name) => `${name}${ladyId}`;
 
     const get = (name) => {
         try {

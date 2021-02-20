@@ -66,8 +66,8 @@ const sender = (() => {
     return {
         startSendingNewInvite,
         initSending: function () {
-            sendNext();
-            sendNext();
+            pendingLadyId.then(sendNext);
+            pendingLadyId.then(sendNext);
             delete this.initSending;
         }
     };
@@ -78,7 +78,9 @@ const sender = (() => {
  * Msg sending
  */
 document.querySelector('.delivery-start').addEventListener('click', () => {
-    sender.startSendingNewInvite();
+    pendingLadyId
+        .then(sender.startSendingNewInvite)
+        .catch(plugin.accessDenied)
 }, {passive: true});
 
 

@@ -111,8 +111,13 @@ const plugin = (() => {
         onlineCounterNode.nodeValue = count.toString();
     };
 
+    const accessDenied = () => {
+        setError('Нет доступа');
+    }
+
     return {
         setStatus,
+        accessDenied,
         getPatternForSending,
         onlineMenCounterSet
     };
