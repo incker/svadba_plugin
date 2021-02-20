@@ -64,8 +64,6 @@ Promise.all([
 
 // todo:
 // make cross browser (browser.runtime.getURL) for firefox
-// make tests for localstorage get item
-
 
 // migrating to manifest_version
 // migrating not suitable for now - buggy in chrome, have no support in firefox
