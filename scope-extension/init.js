@@ -65,7 +65,6 @@ Promise.all([
 // todo:
 // make cross browser (browser.runtime.getURL) for firefox
 // make tests for localstorage get item
-// make sound when spam done?
 
 
 // migrating to manifest_version

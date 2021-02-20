@@ -35,6 +35,7 @@
     "scope-site/man-manager.js",
     "scope-site/active-chats.js",
     "scope-site/api-onliners.js",
-    "scope-site/other/console-clear.js"
+    "scope-site/other/console-clear.js",
+    "scope-site/other/done.mp3"
   ]
 }

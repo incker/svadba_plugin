@@ -95,7 +95,7 @@ const plugin = (() => {
     const modifyStatus = (text, isRed = false) => {
         sendingStatus.nodeValue = text;
         sendingStatus.parentElement.classList.toggle('text-red', isRed);
-        // isRed && (new Audio('https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3')).play();
+        isRed && makeDoneSound();
     }
 
     const setStatus = {
@@ -113,6 +113,24 @@ const plugin = (() => {
 
     const accessDenied = () => {
         setError('Нет доступа');
+    }
+
+    const makeDoneSound = () => {
+        try {
+            const soundUrl = [
+                ...[...document.querySelectorAll('script')].pop().src.split('/').slice(0, 4),
+                'other/done.mp3',
+            ].join('/');
+            const noise = () => {
+                (new Audio(soundUrl)).play();
+            };
+            noise();
+            setTimeout(noise, 50);
+            setTimeout(noise, 100);
+            setTimeout(noise, 200);
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     return {
