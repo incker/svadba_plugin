@@ -1,15 +1,13 @@
 'use strict';
 
-const buildUrl = (path) => `chrome-extension://${chrome.runtime.id}/${path}`;
-
 Promise.all([
     () => document.head.appendChild(
         Object.assign(document.createElement('link'), {
             rel: 'stylesheet', // хромовская ссылка
-            href: buildUrl('plugin.css')
+            href: chrome.runtime.getURL('plugin.css')
         })),
 
-    fetch(buildUrl('plugin.html'))
+    fetch(chrome.runtime.getURL('plugin.html'))
         .then((resp) => resp.text())
         .then((respText) => {
             const div = document.createElement('div');
@@ -42,7 +40,7 @@ Promise.all([
         ].forEach((src) => {
             // подключаем javascript на страницу
             const script = document.createElement('script');
-            script.src = buildUrl(src); // хромовская ссылка
+            script.src = chrome.runtime.getURL(src); // хромовская ссылка
             script.async = false; // чтоб загружались последовательно
             fragment.appendChild(script);
         });
