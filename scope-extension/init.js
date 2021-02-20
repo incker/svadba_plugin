@@ -55,8 +55,8 @@ fetch(buildUrl('plugin.html'))
     })
     .then((eventStack) => {
         eventStack.push(() => {
-            const height = document.querySelector('.svadba-widget').offsetHeight.toString();
-            document.getElementById('contacts').style.marginBottom = height.concat('px');
+            const height = document.querySelector('.svadba-widget').offsetHeight;
+            document.getElementById('contacts').style.marginBottom = `${height}px`;
         });
         return eventStack;
     })
