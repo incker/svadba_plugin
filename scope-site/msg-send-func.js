@@ -74,5 +74,5 @@ const dynamicMsgFetchFunc = (buildMsgFunc) => {
  * @returns {Promise<Response>}
  */
 const fetchWrapper = (id, headers) => {
-    return fetch('https://www.svadba.com/chat/send-message/'.concat(id.toString()), headers)
+    return fetch(`https://www.svadba.com/chat/send-message/${id}`, headers)
 };

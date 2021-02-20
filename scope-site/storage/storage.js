@@ -36,10 +36,6 @@ const storage = (() => {
 
 
 const storageKeepSaving = (saveFunc) => {
-    setInterval(saveFunc, 300 * 1000);
+    setInterval(saveFunc, 300_000);
     window.addEventListener('beforeunload', saveFunc);
 }
-
-
-
-

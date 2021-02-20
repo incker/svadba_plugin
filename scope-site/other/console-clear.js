@@ -1,6 +1,5 @@
 'use strict';
 
-// просто потому что сильно много ошибок сыпется
-setTimeout(() => {
-    console.clear();
-}, 30 * 1000);
+// clear console every 10 second
+// because too many http errors
+setTimeout(console.clear, 10_000);

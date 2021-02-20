@@ -2,21 +2,18 @@
 
 const initSoulmates = () => {
     const dataName = 'soulmates';
-    const soulmates = new Map();
+    const soulmates = new Set();
 
     const saveSoulmates = () => {
-        storage.set(dataName, Array.from(soulmates.entries()));
+        storage.set(dataName, Array.from(soulmates));
     };
 
     pendingLadyId.then(() => {
         const dataSoulmates = storage.get(dataName) || [];
         if (Array.isArray(dataSoulmates)) {
-            dataSoulmates.forEach(arr => {
-                if (Array.isArray(arr)) {
-                    const [id, count] = arr;
-                    if (typeof id === 'number' && typeof count === 'number' && count < 6) {
-                        soulmates.set(id, count);
-                    }
+            dataSoulmates.forEach(id => {
+                if (Number.isInteger(id)) {
+                    soulmates.add(id);
                 }
             });
         }

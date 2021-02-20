@@ -8,25 +8,30 @@ const sender = (() => {
     /** @type {!function(!number): !Promise<Response> } */
     let fetchMsg = createMsgSendFunc('hello');
 
-    const dummyFetchMsg = (_) => new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({status: 429});
-        }, 2000);
+    const promiseWait = (time, resp) => new Promise((resolve) => {
+        setTimeout(resolve, time, resp);
     });
+
+    const dummyFetchMsg = (_) => promiseWait(2000, {status: 429});
 
     const sendMsg = (id) => fetchMsg(id)
         .then((resp) => {
             switch (resp.status) {
                 case 429:
-                    manManager.msgSendFail(id);
+                    manManager.msgSendFailNotSoulmate(id);
                     break;
                 case 200:
                     manManager.msgSendSuccess(id);
                     break;
                 case 502:
-                    break;
+                    manManager.msgSendFail(id);
+                    return promiseWait(10_000);
+                // case when videochat is running
+                case 403:
+                    manManager.msgSendFail(id);
+                    return promiseWait(20_000);
                 default:
-                    console.error('resp is not 200|429|502 !', resp);
+                    console.error('resp is not 200|429|502|403 !', resp);
             }
         });
 
@@ -54,7 +59,7 @@ const sender = (() => {
             }
         } catch (e) {
             console.error(e);
-            setTimeout(sendNext, 10 * 1000)
+            setTimeout(sendNext, 10_000)
         }
     }
 
@@ -83,5 +88,3 @@ document.querySelector('.delivery-start').addEventListener('click', () => {
 document.querySelector('.delivery-start').addEventListener('click', () => {
     sender.initSending();
 }, {once: true, passive: true});
-
-// todo из апишки получить тех мужиков кто в контактном списке? И спользовать их как soulmates?

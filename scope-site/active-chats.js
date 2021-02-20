@@ -60,7 +60,7 @@ const detectActiveChats = () => fetch('https://www.svadba.com/chat/updates/statu
         for (const id of activeChats) {
             lastChats.add(id);
             fragment.appendChild(Object.assign(document.createElement('a'), {
-                href: 'https://www.svadba.com/chat/#/'.concat(id.toString()),
+                href: `https://www.svadba.com/chat/#/${id}`,
                 textContent: id.toString(),
             }));
             // пробелы между ссылками

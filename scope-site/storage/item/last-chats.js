@@ -15,7 +15,7 @@ const initLastChats = () => {
             dataLastChats.forEach(arr => {
                 if (Array.isArray(arr)) {
                     const [id, time] = arr;
-                    if (typeof id === 'number' && typeof time === 'number' && time < currentTime) {
+                    if (Number.isInteger(id) && Number.isInteger(time) && time < currentTime) {
                         lastChats.set(id, time);
                     }
                 }

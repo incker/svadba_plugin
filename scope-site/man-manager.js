@@ -9,22 +9,18 @@ const manManager = (() => {
 
     const msgSendSuccess = (id) => {
         counter.increment();
-        soulmates.set(id, 5);
+        soulmates.add(id);
         strangers.delete(id);
     };
 
     const msgSendFail = (id) => {
         received.delete(id);
-        const count = soulmates.get(id);
-        if (count) {
-            if (count < 2) {
-                soulmates.delete(id);
-            } else {
-                soulmates.set(id, count - 1);
-            }
-        } else {
-            strangers.add(id);
-        }
+    };
+
+    const msgSendFailNotSoulmate = (id) => {
+        received.delete(id);
+        soulmates.delete(id);
+        strangers.add(id);
     };
 
     const dropCurrentMenQueue = () => {
@@ -55,32 +51,53 @@ const manManager = (() => {
         }
     }
 
-    const refreshManToInvite = () => {
-        (() => {
-            dropCurrentMenQueue();
-            const soulmatesOnline = [];
-            onliners.forEach((id) => {
-                if (!strangers.has(id) && !received.has(id)) {
-                    if (soulmates.has(id)) {
-                        soulmatesOnline.push(id);
-                    } else {
-                        menForSpam.push(id);
-                    }
-                }
-            });
-            // добавляем soulmates последними, чтоб им пришло сообщение первым
-            soulmatesOnline.forEach((id) => {
-                menForSpam.push(id);
-            });
-        })();
+    const chunkOnliners = () => {
+        const soulmatesOnline = [];
+        const strangersOnline = [];
+        const othersOnline = [];
 
-        if (menForSpam.length === 0) {
-            if (strangers.size === 0) {
-                throw `no men, onliners count: ${onliners.size}`;
-            } else {
-                strangers.clear();
-                refreshManToInvite();
+        onliners.forEach((id) => {
+            if (!received.has(id)) {
+                if (soulmates.has(id)) {
+                    soulmatesOnline.push(id);
+                } else if (strangers.has(id)) {
+                    strangersOnline.push(id);
+                } else {
+                    othersOnline.push(id);
+                }
             }
+        });
+        return [soulmatesOnline, strangersOnline, othersOnline];
+    }
+
+
+    const addToQueueStack = (arr) => {
+        arr.forEach((id) => {
+            menForSpam.push(id);
+        })
+    }
+
+    const refreshManToInvite = () => {
+        const [soulmatesOnline, strangersOnline, othersOnline] = chunkOnliners();
+        dropCurrentMenQueue();
+        // first need to spam all soulmates, than all others, than all strangers
+
+        if (soulmatesOnline.length > 30) {
+            addToQueueStack(soulmatesOnline);
+        } else if (othersOnline.length > 200) {
+            addToQueueStack(othersOnline);
+            addToQueueStack(soulmatesOnline);
+        } else {
+            addToQueueStack(strangersOnline);
+            addToQueueStack(othersOnline);
+            addToQueueStack(soulmatesOnline);
+        }
+
+        if (menForSpam.length < 5) {
+            plugin.setStatus.done();
+            throw `no men, onliners count: ${onliners.size}`;
+        } else {
+            plugin.setStatus.isSending();
         }
     }
 
@@ -113,9 +130,9 @@ const manManager = (() => {
         menQueue,
         msgSendSuccess,
         msgSendFail,
+        msgSendFailNotSoulmate,
         setNewOnliners,
         takeLastChats,
         prepareForNewInvite,
     };
 })();
-

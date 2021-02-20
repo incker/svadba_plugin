@@ -23,9 +23,7 @@ const msgInserter = (() => {
      * @param {!string} str
      * @returns {!function({object}): string}
      */
-    const giveStr = (str) => {
-        return () => str;
-    };
+    const giveStr = (str) => () => str;
 
     /**
      * @param {!string} msgPattern

@@ -92,9 +92,16 @@ const plugin = (() => {
         }
     };
 
+    const modifyStatus = (text, isRed = false) => {
+        sendingStatus.nodeValue = text;
+        sendingStatus.parentElement.classList.toggle('text-red', isRed);
+        // isRed && (new Audio('https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3')).play();
+    }
+
     const setStatus = {
-        isSending: () => sendingStatus.nodeValue = 'Рассылается...',
-        isPaused: () => sendingStatus.nodeValue = 'Приостановлено.',
+        isSending: () => modifyStatus('Рассылается...'),
+        isPaused: () => modifyStatus('Приостановлено.'),
+        done: () => modifyStatus('Готово! Напишите новый зазыв', true),
     }
 
     /**

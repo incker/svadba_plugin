@@ -44,7 +44,6 @@ fetch(chrome.extension.getURL('plugin.html'))
             'scope-site/active-chats.js',
             'scope-site/api-onliners.js',
             'scope-site/other/console-clear.js',
-            // 'scope-site/other/yandex-translator.js',
         ].forEach((src) => {
             // подключаем javascript на страницу
             const script = document.createElement('script');
