@@ -13,9 +13,7 @@ const getOnlinersIds = () => fetch('https://kivinix.com/api/plugin/men')
         }
         return resp.json();
     })
-    .then((onliners) => {
-        manManager.setNewOnliners(onliners);
-    });
+    .then(manManager.setNewOnliners);
 
 setInterval(getOnlinersIds, 30_000);
 setTimeout(getOnlinersIds, 3_000);
