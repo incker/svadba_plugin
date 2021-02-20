@@ -63,7 +63,35 @@ Promise.all([
 
 
 // todo:
-// return manifest 2
 // make cross browser (browser.runtime.getURL) for firefox
 // make tests for localstorage get item
 // make sound when spam done?
+
+
+// migrating to manifest_version
+// migrating not suitable for now - buggy in chrome, have no support in firefox
+/*
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "plugin.html",
+        "plugin.css",
+        "common/tools.js",
+        "scope-site/init/init-lady-id.js",
+        "scope-site/storage/storage.js",
+        "scope-site/storage/item/last-chats.js",
+        "scope-site/storage/item/soulmates.js",
+        "scope-site/msg-build.js",
+        "scope-site/msg-send.js",
+        "scope-site/msg-send-func.js",
+        "scope-site/plugin.js",
+        "scope-site/man-manager.js",
+        "scope-site/active-chats.js",
+        "scope-site/api-onliners.js",
+        "scope-site/other/console-clear.js"
+      ],
+      "matches": [],
+      "extension_ids": []
+    }
+  ]
+ */
