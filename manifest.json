@@ -1,7 +1,7 @@
 {
   "name": "Svadba plugin",
-  "version": "4.0.7",
-  "manifest_version": 2,
+  "version": "4.0.8",
+  "manifest_version": 3,
   "icons": {
     "16": "icon/icon16.png",
     "48": "icon/icon48.png",
@@ -21,20 +21,26 @@
     }
   ],
   "web_accessible_resources": [
-    "plugin.html",
-    "plugin.css",
-    "common/tools.js",
-    "scope-site/init/init-lady-id.js",
-    "scope-site/storage/storage.js",
-    "scope-site/storage/item/last-chats.js",
-    "scope-site/storage/item/soulmates.js",
-    "scope-site/msg-build.js",
-    "scope-site/msg-send.js",
-    "scope-site/msg-send-func.js",
-    "scope-site/plugin.js",
-    "scope-site/man-manager.js",
-    "scope-site/active-chats.js",
-    "scope-site/api-onliners.js",
-    "scope-site/other/console-clear.js"
+    {
+      "resources": [
+        "plugin.html",
+        "plugin.css",
+        "common/tools.js",
+        "scope-site/init/init-lady-id.js",
+        "scope-site/storage/storage.js",
+        "scope-site/storage/item/last-chats.js",
+        "scope-site/storage/item/soulmates.js",
+        "scope-site/msg-build.js",
+        "scope-site/msg-send.js",
+        "scope-site/msg-send-func.js",
+        "scope-site/plugin.js",
+        "scope-site/man-manager.js",
+        "scope-site/active-chats.js",
+        "scope-site/api-onliners.js",
+        "scope-site/other/console-clear.js"
+      ],
+      "matches": [],
+      "extension_ids": []
+    }
   ]
 }

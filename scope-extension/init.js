@@ -1,6 +1,8 @@
 'use strict';
 
-fetch(chrome.extension.getURL('plugin.html'))
+const buildUrl = (path) => `chrome-extension://${chrome.runtime.id}/${path}`;
+
+fetch(buildUrl('plugin.html'))
     .then((resp) => resp.text())
     .then((respText) => {
         const div = document.createElement('div');
@@ -9,18 +11,15 @@ fetch(chrome.extension.getURL('plugin.html'))
         [...div.children].forEach(elem => (elem.nodeType === 1) && fragment.appendChild(elem));
         return fragment;
     })
-    .then(pluginHtmlFragment => {
-        const eventStack = [];
-        const event = () => document.getElementById('i-mount').appendChild(pluginHtmlFragment);
-        eventStack.push(event);
-        return eventStack;
-    })
+    .then((pluginHtmlFragment) => [() => {
+        document.getElementById('i-mount').appendChild(pluginHtmlFragment);
+    }])
     .then((eventStack) => {
         // внедряем /plugin.css в страницу
         document.head.appendChild(
             Object.assign(document.createElement('link'), {
                 rel: 'stylesheet', // хромовская ссылка
-                href: chrome.extension.getURL('plugin.css')
+                href: buildUrl('plugin.css')
             })
         );
         return eventStack;
@@ -47,20 +46,18 @@ fetch(chrome.extension.getURL('plugin.html'))
         ].forEach((src) => {
             // подключаем javascript на страницу
             const script = document.createElement('script');
-            script.src = chrome.extension.getURL(src); // хромовская ссылка
+            script.src = buildUrl(src); // хромовская ссылка
             script.async = false; // чтоб загружались последовательно
             fragment.appendChild(script);
         });
-        const event = () => document.body.appendChild(fragment);
-        eventStack.push(event);
+        eventStack.push(() => document.body.appendChild(fragment));
         return eventStack;
     })
     .then((eventStack) => {
-        const event = () => {
+        eventStack.push(() => {
             const height = document.querySelector('.svadba-widget').offsetHeight.toString();
             document.getElementById('contacts').style.marginBottom = height.concat('px');
-        }
-        eventStack.push(event);
+        });
         return eventStack;
     })
     .then((eventStack) => {
