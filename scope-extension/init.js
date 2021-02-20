@@ -2,29 +2,25 @@
 
 const buildUrl = (path) => `chrome-extension://${chrome.runtime.id}/${path}`;
 
-fetch(buildUrl('plugin.html'))
-    .then((resp) => resp.text())
-    .then((respText) => {
-        const div = document.createElement('div');
-        const fragment = document.createDocumentFragment();
-        div.insertAdjacentHTML('beforeend', respText);
-        [...div.children].forEach(elem => (elem.nodeType === 1) && fragment.appendChild(elem));
-        return fragment;
-    })
-    .then((pluginHtmlFragment) => [() => {
-        document.getElementById('i-mount').appendChild(pluginHtmlFragment);
-    }])
-    .then((eventStack) => {
-        // внедряем /plugin.css в страницу
-        document.head.appendChild(
-            Object.assign(document.createElement('link'), {
-                rel: 'stylesheet', // хромовская ссылка
-                href: buildUrl('plugin.css')
-            })
-        );
-        return eventStack;
-    })
-    .then((eventStack) => {
+Promise.all([
+    () => document.head.appendChild(
+        Object.assign(document.createElement('link'), {
+            rel: 'stylesheet', // хромовская ссылка
+            href: buildUrl('plugin.css')
+        })),
+
+    fetch(buildUrl('plugin.html'))
+        .then((resp) => resp.text())
+        .then((respText) => {
+            const div = document.createElement('div');
+            const fragment = document.createDocumentFragment();
+            div.insertAdjacentHTML('beforeend', respText);
+            [...div.children].forEach(elem => (elem.nodeType === 1) && fragment.appendChild(elem));
+            return fragment;
+        })
+        .then((htmlFragment) => () => document.getElementById('i-mount').appendChild(htmlFragment)),
+
+    (() => {
         const fragment = document.createDocumentFragment();
         [
             'common/tools.js',
@@ -50,16 +46,14 @@ fetch(buildUrl('plugin.html'))
             script.async = false; // чтоб загружались последовательно
             fragment.appendChild(script);
         });
-        eventStack.push(() => document.body.appendChild(fragment));
-        return eventStack;
-    })
-    .then((eventStack) => {
-        eventStack.push(() => {
-            const height = document.querySelector('.svadba-widget').offsetHeight;
-            document.getElementById('contacts').style.marginBottom = `${height}px`;
-        });
-        return eventStack;
-    })
+        return () => document.body.appendChild(fragment);
+    })(),
+
+    () => {
+        const height = document.querySelector('.svadba-widget').offsetHeight;
+        document.getElementById('contacts').style.marginBottom = `${height}px`;
+    }
+])
     .then((eventStack) => {
         const timer = setInterval(() => {
             const soulmatesTab = document.querySelector('#soulmates-tab');
