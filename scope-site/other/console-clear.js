@@ -1,5 +1,5 @@
 'use strict';
 
-// clear console every 10 second
+// clear console every 30 second
 // because too many http errors
-setTimeout(console.clear, 10_000);
+setInterval(console.clear, 30_000);
