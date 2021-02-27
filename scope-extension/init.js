@@ -26,7 +26,6 @@ Promise.all([
             // load db
             'scope-site/storage/storage.js',
             'scope-site/storage/item/last-chats.js',
-            'scope-site/storage/item/soulmates.js',
             // just funcs
             'scope-site/msg-send-func.js',
             'scope-site/msg-build.js',
@@ -77,7 +76,6 @@ Promise.all([
         "scope-site/init/init-lady-id.js",
         "scope-site/storage/storage.js",
         "scope-site/storage/item/last-chats.js",
-        "scope-site/storage/item/soulmates.js",
         "scope-site/msg-build.js",
         "scope-site/msg-send.js",
         "scope-site/msg-send-func.js",

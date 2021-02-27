@@ -1,6 +1,6 @@
 {
   "name": "Svadba plugin",
-  "version": "4.0.9",
+  "version": "4.0.10",
   "manifest_version": 2,
   "icons": {
     "16": "icon/icon16.png",
@@ -27,7 +27,6 @@
     "scope-site/init/init-lady-id.js",
     "scope-site/storage/storage.js",
     "scope-site/storage/item/last-chats.js",
-    "scope-site/storage/item/soulmates.js",
     "scope-site/msg-build.js",
     "scope-site/msg-send.js",
     "scope-site/msg-send-func.js",

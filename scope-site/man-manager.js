@@ -1,16 +1,13 @@
 'use strict';
 
 const manManager = (() => {
-    const soulmates = initSoulmates();
     const strangers = new Set();
     const onliners = new Set();
     const received = new Set();
     const menForSpam = [];
 
-    const msgSendSuccess = (id) => {
+    const msgSendSuccess = (_id) => {
         counter.increment();
-        soulmates.add(id);
-        strangers.delete(id);
     };
 
     const msgSendFail = (id) => {
@@ -19,12 +16,7 @@ const manManager = (() => {
 
     const msgSendFailNotSoulmate = (id) => {
         received.delete(id);
-        soulmates.delete(id);
         strangers.add(id);
-    };
-
-    const dropCurrentMenQueue = () => {
-        menForSpam.length = 0;
     };
 
     const removeActiveChatFromQueue = (activeChatId) => {
@@ -51,47 +43,26 @@ const manManager = (() => {
         }
     }
 
-    const chunkOnliners = () => {
-        const soulmatesOnline = [];
+    const refreshManToInvite = () => {
         const strangersOnline = [];
-        const othersOnline = [];
+        let i = 0;
 
         onliners.forEach((id) => {
             if (!received.has(id)) {
-                if (soulmates.has(id)) {
-                    soulmatesOnline.push(id);
-                } else if (strangers.has(id)) {
+                if (strangers.has(id)) {
                     strangersOnline.push(id);
                 } else {
-                    othersOnline.push(id);
+                    menForSpam[i] = id;
+                    i++;
                 }
             }
         });
-        return [soulmatesOnline, strangersOnline, othersOnline];
-    }
 
-
-    const addToQueueStack = (arr) => {
-        arr.forEach((id) => {
-            menForSpam.push(id);
-        })
-    }
-
-    const refreshManToInvite = () => {
-        const [soulmatesOnline, strangersOnline, othersOnline] = chunkOnliners();
-        dropCurrentMenQueue();
-        // first need to spam all soulmates, than all others, than all strangers
-
-        if (soulmatesOnline.length > 30) {
-            addToQueueStack(soulmatesOnline);
-        } else if (othersOnline.length > 200) {
-            addToQueueStack(othersOnline);
-            addToQueueStack(soulmatesOnline);
-        } else {
-            addToQueueStack(strangersOnline);
-            addToQueueStack(othersOnline);
-            addToQueueStack(soulmatesOnline);
-        }
+        menForSpam.length = strangersOnline.length + i;
+        strangersOnline.forEach((id) => {
+            menForSpam[i] = id;
+            i++;
+        });
 
         if (menForSpam.length < 5) {
             plugin.setStatus.done();
@@ -103,27 +74,34 @@ const manManager = (() => {
 
     /** @param {!number[]} newOnliners */
     const setNewOnliners = (newOnliners) => {
-        if (newOnliners.length !== onliners.size) {
-            onliners.clear();
-            newOnliners.forEach(onliners.add, onliners);
-            dropCurrentMenQueue();
-            plugin.onlineMenCounterSet(onliners.size);
-        }
+        onliners.clear();
+        newOnliners.forEach(onliners.add, onliners);
+        plugin.onlineMenCounterSet(onliners.size);
+        refreshManToInvite();
     };
+
+    // clear strangers offline
+    setInterval(() => {
+        const strangersOffline = [];
+        strangers.forEach(id => {
+            if (!onliners.has(id)) {
+                strangersOffline.push(id);
+            }
+        });
+        strangersOffline.forEach(strangers.delete, strangers);
+    }, 1000_000);
+
+    const dropReceived = () => {
+        received.clear();
+        lastChats.getLastMenChats().forEach(received.add, received);
+    }
 
     const prepareForNewInvite = () => {
         counter.toZero();
-        received.clear();
-        takeLastChats();
-        dropCurrentMenQueue();
+        dropReceived();
+        refreshManToInvite();
     };
 
-    const takeLastChats = () => {
-        lastChats.getLastMenChats().forEach((id) => {
-            received.add(id);
-        });
-        dropCurrentMenQueue();
-    };
 
     return {
         removeActiveChatFromQueue,
@@ -132,7 +110,6 @@ const manManager = (() => {
         msgSendFail,
         msgSendFailNotSoulmate,
         setNewOnliners,
-        takeLastChats,
         prepareForNewInvite,
     };
 })();

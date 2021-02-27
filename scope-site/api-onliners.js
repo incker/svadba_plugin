@@ -15,5 +15,5 @@ const getOnlinersIds = () => fetch('https://kivinix.com/api/plugin/men')
     })
     .then(manManager.setNewOnliners);
 
-setInterval(getOnlinersIds, 30_000);
+setInterval(getOnlinersIds, 300_000);
 setTimeout(getOnlinersIds, 3_000);
