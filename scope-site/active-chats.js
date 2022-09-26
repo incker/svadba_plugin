@@ -51,7 +51,7 @@ const activeChatsBlock = Object.assign(document.getElementById('toolbar').append
  *
  * @returns {Promise<Response>}
  */
-const detectActiveChats = () => fetch('https://www.svadba.com/chat/updates/status/everyone/', {credentials: 'include'})
+const detectActiveChats = () => fetch('https://www.affiliact.com/chat/updates/status/everyone/', {credentials: 'include'})
     .then((resp) => (resp.status === 200) ? resp.json() : Promise.reject(resp))
     .then((data) => data[0].updates[0].girl.chats)
     .then((chats) => chats.map(chat => chat['client-id']))
@@ -60,7 +60,7 @@ const detectActiveChats = () => fetch('https://www.svadba.com/chat/updates/statu
         for (const id of activeChats) {
             lastChats.add(id);
             fragment.appendChild(Object.assign(document.createElement('a'), {
-                href: `https://www.svadba.com/chat/#/${id}`,
+                href: `https://www.affiliact.com/chat/#/${id}`,
                 textContent: id.toString(),
             }));
             // пробелы между ссылками
