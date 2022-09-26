@@ -12,7 +12,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.svadba.com/chat/*"
+        "https://www.svadba.com/chat/*",
+        "https://www.affiliact.com/chat/*"
       ],
       "js": [
         "scope-extension/init.js"
