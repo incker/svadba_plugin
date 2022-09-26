@@ -1,6 +1,6 @@
 {
   "name": "Svadba plugin",
-  "version": "4.0.10",
+  "version": "4.0.11",
   "manifest_version": 2,
   "icons": {
     "16": "icon/icon16.png",
