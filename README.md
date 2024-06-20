@@ -6,7 +6,7 @@ Chrome extension that helps send chat invitations
 
 [Chrome web store extension link](https://chrome.google.com/webstore/detail/svadba-plugin/pmfcnljgkdcikfncdieiillhnmlfobgj?hl=ru&authuser=1)
 
-[Chrome developer console](https://chrome.google.com/webstore/developer/dashboard/g00974767231621207728?authuser=1&page=1)
+[Chrome Developer Dashboard](https://chrome.google.com/webstore/devconsole?authuser=1)
 
 ## Installation
 
